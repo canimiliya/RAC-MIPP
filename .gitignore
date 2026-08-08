@@ -1,0 +1,12 @@
+.deps/
+__pycache__/
+.pytest_cache/
+.venv/
+env/
+*.pyc
+wandb/
+runs/
+checkpoints/
+*.pt
+*.pth
+*.ckpt

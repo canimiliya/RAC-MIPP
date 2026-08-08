@@ -1,0 +1,17 @@
+{
+  "task_id": "S0-R0-REPO-BOOTSTRAP-UPSTREAM-PROVENANCE-R1",
+  "start_head": "dd271c06fed29f1348223dd52ef33c65bb023ce7",
+  "end_head": "PENDING_FINAL_COMMIT_SHA",
+  "origin": "https://github.com/canimiliya/RAC-MIPP.git",
+  "branch": "bootstrap/s0-r0",
+  "upstream_repo": "https://github.com/dmar-bonn/ipp-marl.git",
+  "upstream_commit": "1e9bdc3ba90f707ce79797468f533f5733c65e4b",
+  "dependency_ignored": true,
+  "smoke_test": {
+    "command": "pytest -q",
+    "passed": 1,
+    "failed": 0,
+    "exit_code": 0
+  },
+  "long_training_started": false
+}
