@@ -1,0 +1,19 @@
+{
+  "task_id": "S0-R1-INTEGRATE-README-S0-READINESS-R1",
+  "start_head": "80afd9b026b38506c9b8bce0c895f28e05b09c54",
+  "origin": "https://github.com/canimiliya/RAC-MIPP.git",
+  "main_head_after_s0_r0_integration": "80afd9b026b38506c9b8bce0c895f28e05b09c54",
+  "branch": "bootstrap/s0-r1",
+  "upstream_repo": "https://github.com/dmar-bonn/ipp-marl.git",
+  "upstream_commit": "1e9bdc3ba90f707ce79797468f533f5733c65e4b",
+  "local_repo_synced": true,
+  "origin_correct": true,
+  "upstream_commit_pinned": true,
+  "upstream_license_audited": true,
+  "deps_ignored": true,
+  "environment_recorded": true,
+  "repo_skeleton_ready": true,
+  "smoke_test_pass": true,
+  "readme_points_to_project_progress": true,
+  "long_training_started": false
+}

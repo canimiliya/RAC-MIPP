@@ -1,7 +1,8 @@
 {
   "task_id": "S0-R0-REPO-BOOTSTRAP-UPSTREAM-PROVENANCE-R1",
   "start_head": "dd271c06fed29f1348223dd52ef33c65bb023ce7",
-  "end_head": "44157ffa755a4f77936a8caf3672a4da157c9327",
+  "end_head": "80afd9b026b38506c9b8bce0c895f28e05b09c54",
+  "implementation_head": "44157ffa755a4f77936a8caf3672a4da157c9327",
   "origin": "https://github.com/canimiliya/RAC-MIPP.git",
   "branch": "bootstrap/s0-r0",
   "upstream_repo": "https://github.com/dmar-bonn/ipp-marl.git",
