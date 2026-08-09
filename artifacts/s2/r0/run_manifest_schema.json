@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "RAC-MIPP formal run manifest",
+  "type": "object",
+  "required": ["RUN_ID", "TASK_ID", "GIT_HEAD", "UPSTREAM_COMMIT", "CONFIG_HASH", "SEED", "ALGORITHM", "ENVIRONMENT", "TEAM_SIZE", "COMM_DROP", "COMM_DELAY", "START_TIME", "END_TIME", "STATUS", "PRIMARY_METRICS", "ARTIFACT_PATHS"],
+  "properties": {
+    "RUN_ID": {"type": "string", "minLength": 1},
+    "TASK_ID": {"type": "string", "minLength": 1},
+    "GIT_HEAD": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "UPSTREAM_COMMIT": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "CONFIG_HASH": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "SEED": {"oneOf": [{"type": "integer", "minimum": 0, "maximum": 4294967295}, {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "integer", "minimum": 0, "maximum": 4294967295}}]},
+    "ALGORITHM": {"type": "string"},
+    "ENVIRONMENT": {"type": "string"},
+    "TEAM_SIZE": {"type": "integer", "minimum": 1},
+    "COMM_DROP": {}, "COMM_DELAY": {},
+    "START_TIME": {"type": "string"}, "END_TIME": {"type": "string"},
+    "STATUS": {"enum": ["RUNNING", "COMPLETED", "FAILED", "INTERRUPTED"]},
+    "PRIMARY_METRICS": {"type": "object"},
+    "ARTIFACT_PATHS": {"type": "array", "items": {"type": "string"}}
+  }
+}

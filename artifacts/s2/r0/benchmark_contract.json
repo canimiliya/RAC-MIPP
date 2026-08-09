@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "task_id": "S2-R0-BENCHMARK-EVALUATION-CONTRACT-FREEZE-R1",
+  "frozen_from_git_head": "aaf3f24e3a1c073d958b3056f338d6206dadca14",
+  "upstream_commit": "1e9bdc3ba90f707ce79797468f533f5733c65e4b",
+  "seed_contract": {
+    "generation_rule": "inclusive integer ranges; never substitute seeds after observing results",
+    "TRAIN": {"seeds": [11001, 11002, 11003, 11004, 11005, 11006, 11007, 11008, 11009, 11010], "allowed_use": ["training"]},
+    "VALIDATION": {"seeds": [15001, 15002, 15003, 15004, 15005, 15006, 15007, 15008, 15009, 15010, 15011, 15012, 15013, 15014, 15015, 15016, 15017, 15018, 15019, 15020, 15021, 15022, 15023, 15024, 15025, 15026, 15027, 15028, 15029, 15030, 15031, 15032, 15033, 15034, 15035, 15036, 15037, 15038, 15039, 15040, 15041, 15042, 15043, 15044, 15045, 15046, 15047, 15048, 15049, 15050], "allowed_use": ["checkpoint_selection", "early_stopping", "hyperparameter_tuning"]},
+    "IID_TEST": {"seeds": [20001, 20002, 20003, 20004, 20005, 20006, 20007, 20008, 20009, 20010, 20011, 20012, 20013, 20014, 20015, 20016, 20017, 20018, 20019, 20020, 20021, 20022, 20023, 20024, 20025, 20026, 20027, 20028, 20029, 20030, 20031, 20032, 20033, 20034, 20035, 20036, 20037, 20038, 20039, 20040, 20041, 20042, 20043, 20044, 20045, 20046, 20047, 20048, 20049, 20050], "allowed_use": ["final_reporting"], "s1_parity_anchor": true},
+    "OOD_TEST": {"seeds": [30001, 30002, 30003, 30004, 30005, 30006, 30007, 30008, 30009, 30010, 30011, 30012, 30013, 30014, 30015, 30016, 30017, 30018, 30019, 30020, 30021, 30022, 30023, 30024, 30025, 30026, 30027, 30028, 30029, 30030, 30031, 30032, 30033, 30034, 30035, 30036, 30037, 30038, 30039, 30040, 30041, 30042, 30043, 30044, 30045, 30046, 30047, 30048, 30049, 30050], "allowed_use": ["final_reporting"]}
+  },
+  "split_contract": {
+    "TRAIN": "policy optimization only",
+    "VALIDATION": "development and model selection",
+    "IID_TEST": "one-way final evaluation under training-distribution conditions",
+    "OOD_TEST": "one-way final evaluation under preregistered held-out conditions",
+    "communication_conditions": {"TRAIN": "INTERFACE_RESERVED_FOR_S3", "IID_TEST": "INTERFACE_RESERVED_FOR_S3", "OOD_TEST": "INTERFACE_RESERVED_FOR_S3"}
+  },
+  "baseline_budget": {
+    "primary_equalizer": "ENVIRONMENT_AGENT_INTERACTIONS",
+    "same_for_all_algorithms": ["formal_train_seed_set", "interaction_budget_per_seed", "evaluation_seed_set", "evaluation_trials", "checkpoint_selection_rule", "environment_and_split_config"],
+    "checkpoint_selection": "single preregistered validation rule; test cannot select checkpoints",
+    "optimizer_updates": "recorded but may differ because on-policy batch mechanics differ",
+    "wall_clock": "reported separately; never substitutes for interaction parity",
+    "parameter_count": "required metadata; equality is not required",
+    "prohibited": "no method receives extra interactions after results are observed"
+  },
+  "metric_schema": {
+    "available_now": ["entropy", "F1", "mission_return", "episode_length", "measurement_count", "path_length"],
+    "reserved_not_available_yet": ["communication_load", "packet_delivery", "tail_risk", "OOD_gap"],
+    "missing_value": "NOT_AVAILABLE_YET"
+  },
+  "communication_hooks": {
+    "mode": "PASSIVE_OBSERVER_ONLY",
+    "reserved_events": ["messages_attempted", "messages_delivered", "payload_bytes", "effective_neighbor_degree", "communication_radius", "delivery_ratio"],
+    "environment_mutation_allowed": false,
+    "packet_drop_or_delay_implemented": false
+  },
+  "coma_s1_reference": {
+    "checkpoint_sha256": "baf19c28c9140cecac18e0aa26baa8cd0b7bc1e11e37376e2b23f73438ef0e65",
+    "trials": 50,
+    "entropy_mean": 0.28848810965422383,
+    "F1_mean": 0.7713280084940715,
+    "per_trial_absolute_tolerance": 1e-12,
+    "aggregate_absolute_tolerance": 1e-12
+  }
+}

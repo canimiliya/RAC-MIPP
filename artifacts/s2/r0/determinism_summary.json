@@ -1,0 +1,30 @@
+{
+  "checkpoint_config_seed_repeated": true,
+  "communication_hook_semantics_preserved": true,
+  "determinism_smoke_pass": true,
+  "hook_off_vs_passive_max_absolute_gaps": {
+    "F1": 0.0,
+    "entropy": 0.0,
+    "episode_length": 0.0,
+    "measurement_count": 0.0,
+    "mission_return": 0.0,
+    "path_length": 0.0
+  },
+  "local_runtime_paths": [
+    "D:\\AgentData\\RAC-MIPP\\S2-R0\\determinism\\hook_off\\trials.csv",
+    "D:\\AgentData\\RAC-MIPP\\S2-R0\\determinism\\hook_off_repeat\\trials.csv",
+    "D:\\AgentData\\RAC-MIPP\\S2-R0\\determinism\\hook_on\\trials.csv"
+  ],
+  "repeat_max_absolute_gaps": {
+    "F1": 0.0,
+    "entropy": 0.0,
+    "episode_length": 0.0,
+    "measurement_count": 0.0,
+    "mission_return": 0.0,
+    "path_length": 0.0
+  },
+  "seed": 20001,
+  "status": "PASS",
+  "task_id": "S2-R0-BENCHMARK-EVALUATION-CONTRACT-FREEZE-R1",
+  "tolerance_absolute": 1e-12
+}

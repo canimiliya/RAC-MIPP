@@ -1,0 +1,37 @@
+{
+  "aggregate_absolute_gaps": {
+    "F1_mean": 1.1102230246251565e-16,
+    "entropy_mean": 5.551115123125783e-17
+  },
+  "checkpoint_sha256": "baf19c28c9140cecac18e0aa26baa8cd0b7bc1e11e37376e2b23f73438ef0e65",
+  "max_per_trial_absolute_gaps": {
+    "F1": 0.0,
+    "entropy": 0.0,
+    "episode_length": 0.0,
+    "mission_return": 0.0,
+    "path_length": 0.0
+  },
+  "metric_parity": true,
+  "reference": "PRESERVED_S1_R1_50_TRIAL_TABLE1",
+  "runtime_artifacts": {
+    "run_manifest": {
+      "path": "D:\\AgentData\\RAC-MIPP\\S2-R0\\parity_50\\run_manifest.json",
+      "sha256": "c5ae996f9d00f6ef2655a28d10016860945ad5156ed2126b0da7751f8505fe4a"
+    },
+    "summary": {
+      "path": "D:\\AgentData\\RAC-MIPP\\S2-R0\\parity_50\\summary.json",
+      "sha256": "d87010ddc77c16529f2b8761a297c2d0f4d55abc32f8c69887bba7d0f5872b7c"
+    },
+    "trials": {
+      "path": "D:\\AgentData\\RAC-MIPP\\S2-R0\\parity_50\\trials.csv",
+      "sha256": "84678c26caf8546ad36b8abb7a9cd96a3cd030b1ce3ef88d3d552d177d26bd1d"
+    }
+  },
+  "s1_reference_preserved": true,
+  "status": "PASS",
+  "task_id": "S2-R0-BENCHMARK-EVALUATION-CONTRACT-FREEZE-R1",
+  "tolerance_absolute": 1e-12,
+  "trial_count": 50,
+  "unified_F1_mean": 0.7713280084940716,
+  "unified_entropy_mean": 0.2884881096542239
+}

@@ -746,7 +746,14 @@ def training(args, config: dict, prereg: dict, params: dict, paths: dict[str, Pa
     return 0
 
 
-def evaluate_episode(params: dict, wrapper, grid, sensor, trial_seed: int) -> dict[str, Any]:
+def evaluate_episode(
+    params: dict,
+    wrapper,
+    grid,
+    sensor,
+    trial_seed: int,
+    communication_observer=None,
+) -> dict[str, Any]:
     import numpy as np
     from marl_framework.batch_memory import BatchMemory
     from marl_framework.mapping.mappings import Mapping
@@ -770,6 +777,8 @@ def evaluate_episode(params: dict, wrapper, grid, sensor, trial_seed: int) -> di
         )
         if timestep == 0:
             trajectory.append([position.copy() for position in positions])
+        if communication_observer is not None:
+            communication_observer.observe_positions(positions, radius=25.0)
         for i, own in enumerate(positions):
             for j, other in enumerate(positions):
                 if i != j and np.linalg.norm(own - other) <= 25:
@@ -824,6 +833,8 @@ def evaluate_episode(params: dict, wrapper, grid, sensor, trial_seed: int) -> di
         "path_length": path_length,
         "communication_events": communication_events,
         "episode_steps": int(params["experiment"]["constraints"]["budget"]) + 1,
+        "measurement_count": (int(params["experiment"]["constraints"]["budget"]) + 1)
+        * int(params["experiment"]["missions"]["n_agents"]),
         "trajectory": np.asarray(trajectory),
         "ground_truth": mapping.simulated_map,
         "final_belief": current_map,
