@@ -1,0 +1,33 @@
+{
+  "alternate_channel_seed": 315002,
+  "channel_rng_implementation": "DEDICATED_NUMPY_GENERATOR_PCG64",
+  "channel_seed": 315001,
+  "config": {
+    "delay": 3,
+    "drop": 0.3,
+    "radius": 25.0
+  },
+  "different_channel_seed_events_changed": true,
+  "environment_seed": 15001,
+  "first_summary": {
+    "communication_radius": 25,
+    "effective_neighbor_degree": 1.8666666666666667,
+    "load_unit": "MESSAGE_UNITS",
+    "message_age_max": 3,
+    "message_age_mean": 3.0,
+    "messages_attempted": 180,
+    "messages_delayed": 80,
+    "messages_delivered": 55,
+    "messages_dropped": 32,
+    "messages_range_eligible": 112,
+    "normalized_communication_load": 0.6222222222222222,
+    "packet_delivery_ratio": 0.49107142857142855,
+    "pending_messages_discarded_at_episode_end": 25
+  },
+  "ground_truth_unchanged_across_channel_seeds": true,
+  "initial_positions_unchanged_across_channel_seeds": true,
+  "legacy_environment_rng_draw_count_independent_of_channel_seed": true,
+  "pass": true,
+  "same_seed_events_exact": true,
+  "same_seed_metrics_exact": true
+}

@@ -1,0 +1,24 @@
+{
+  "all_gates_pass": true,
+  "controller_recommendation": "READY_TO_CLOSE_S3",
+  "final_label": "PASS_S3_R0_UNCERTAIN_COMMUNICATION_ENVIRONMENT_READY_FOR_CLOSEOUT",
+  "gates": {
+    "CHANNEL_METRICS": true,
+    "CHANNEL_RNG_DECOUPLED_FROM_ENV": true,
+    "CHANNEL_SEEDED": true,
+    "DELAY_MODEL": true,
+    "DETERMINISM_SMOKE_PASS": true,
+    "DROP_MODEL": true,
+    "FULL_FORMAL_PYTEST_PASS": true,
+    "NEIGHBOR_MASK": true,
+    "NO_FUTURE_INFORMATION_LEAKAGE": true,
+    "NO_LONG_TRAINING_STARTED": true,
+    "NO_NEW_ALGORITHM_IMPLEMENTED": true,
+    "NO_S4_WORK": true,
+    "ORIGINAL_ZERO_NOISE_PARITY": true,
+    "QUEUE_EPISODE_ISOLATION": true,
+    "S2_EVALUATOR_COMPATIBLE": true,
+    "STRESS_SANITY_PASS": true
+  },
+  "task_id": "S3-R0-UNCERTAIN-COMMUNICATION-ENVIRONMENT-AND-VALIDATION-R1"
+}

@@ -1036,10 +1036,10 @@ LAST_CLOSED_TASK_END_HEAD=05c291e3fb9117a0b14a2f4a15865176b7c9f99d
 # 14. UNIQUE NEXT TASK
 
 ```text
-UNIQUE_NEXT_TASK=S3-R0-UNCERTAIN-COMMUNICATION-ENVIRONMENT-AND-VALIDATION-R1
+UNIQUE_NEXT_TASK=WAIT_FOR_CONTROLLER_DECISION
 ```
 
-总控已正式关闭 S2 并授权唯一任务 `S3-R0-UNCERTAIN-COMMUNICATION-ENVIRONMENT-AND-VALIDATION-R1`。S3 当前执行不可靠通信环境、真实事件指标、零噪声 parity 与 validation characterization；S4-S8 及所有新算法工作仍冻结。
+总控已正式关闭 S2 并授权唯一任务 `S3-R0-UNCERTAIN-COMMUNICATION-ENVIRONMENT-AND-VALIDATION-R1`。该任务已在 `env/s3-r0` 提交不可靠通信环境、真实事件指标、零噪声 parity 与 validation characterization，当前等待总控审计；S3 仍为 `IN_PROGRESS`，S4-S8 及所有新算法工作仍冻结。
 
 以下 S0-R0 Task Goal 保留为历史任务卡，不再是当前执行授权。
 

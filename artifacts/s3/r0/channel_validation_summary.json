@@ -1,0 +1,160 @@
+{
+  "blocker": "NONE",
+  "controller_recommendation": "READY_TO_CLOSE_S3",
+  "core_implementation_head": "e62cbbb64a6284acd5dcb1c88611c30b7a40a5ee",
+  "determinism": {
+    "alternate_channel_seed": 315002,
+    "channel_rng_implementation": "DEDICATED_NUMPY_GENERATOR_PCG64",
+    "channel_seed": 315001,
+    "config": {
+      "delay": 3,
+      "drop": 0.3,
+      "radius": 25.0
+    },
+    "different_channel_seed_events_changed": true,
+    "environment_seed": 15001,
+    "first_summary": {
+      "communication_radius": 25,
+      "effective_neighbor_degree": 1.8666666666666667,
+      "load_unit": "MESSAGE_UNITS",
+      "message_age_max": 3,
+      "message_age_mean": 3.0,
+      "messages_attempted": 180,
+      "messages_delayed": 80,
+      "messages_delivered": 55,
+      "messages_dropped": 32,
+      "messages_range_eligible": 112,
+      "normalized_communication_load": 0.6222222222222222,
+      "packet_delivery_ratio": 0.49107142857142855,
+      "pending_messages_discarded_at_episode_end": 25
+    },
+    "ground_truth_unchanged_across_channel_seeds": true,
+    "initial_positions_unchanged_across_channel_seeds": true,
+    "legacy_environment_rng_draw_count_independent_of_channel_seed": true,
+    "pass": true,
+    "same_seed_events_exact": true,
+    "same_seed_metrics_exact": true
+  },
+  "development_characterization": true,
+  "evidence_sha256": {
+    "channel_determinism.json": "6bd463850edcce1d6725647301d721da7b72adc37ae62c7d99e740cad21b4d6d",
+    "communication_stress_summary.csv": "245eeab63ca7c97cf0e79835433b498c2b42ba6c93382075c1a0875539b94d3b",
+    "communication_stress_summary.json": "53c9688b6e4ae9cdb4e374e60b07cfe03871a88df89aab70de9c3fa3f1553bf2",
+    "zero_noise_parity.json": "1d4f348d3268e2bfd1f612eca312f307c698463897825519646c2ba1d8d00d46"
+  },
+  "final_label": "PASS_S3_R0_UNCERTAIN_COMMUNICATION_ENVIRONMENT_READY_FOR_CLOSEOUT",
+  "formal_progress": "3/9\u224833%",
+  "gates": {
+    "CHANNEL_METRICS": true,
+    "CHANNEL_RNG_DECOUPLED_FROM_ENV": true,
+    "CHANNEL_SEEDED": true,
+    "DELAY_MODEL": true,
+    "DETERMINISM_SMOKE_PASS": true,
+    "DROP_MODEL": true,
+    "FULL_FORMAL_PYTEST_PASS": true,
+    "NEIGHBOR_MASK": true,
+    "NO_FUTURE_INFORMATION_LEAKAGE": true,
+    "NO_LONG_TRAINING_STARTED": true,
+    "NO_NEW_ALGORITHM_IMPLEMENTED": true,
+    "NO_S4_WORK": true,
+    "ORIGINAL_ZERO_NOISE_PARITY": true,
+    "QUEUE_EPISODE_ISOLATION": true,
+    "S2_EVALUATOR_COMPATIBLE": true,
+    "STRESS_SANITY_PASS": true
+  },
+  "long_training_started": false,
+  "not_final_paper_result": true,
+  "s4_work_started": false,
+  "status": "PASS",
+  "stress_endpoints": {
+    "delay_5": {
+      "F1_mean": 0.7479532485176184,
+      "condition": "delay_5",
+      "delay": 5,
+      "drop": 0.0,
+      "effective_neighbor_degree_mean": 1.6366666666666667,
+      "final_entropy_mean": 0.33665331079665634,
+      "message_age_mean_mean": 5.0,
+      "messages_delivered_mean": 57.4,
+      "mission_return_mean": 8.034101455099881,
+      "packet_delivery_ratio_mean": 0.5887321068502003,
+      "radius": 25.0
+    },
+    "drop_0p5": {
+      "F1_mean": 0.7642517449522997,
+      "condition": "drop_0p5",
+      "delay": 0,
+      "drop": 0.5,
+      "effective_neighbor_degree_mean": 1.6400000000000001,
+      "final_entropy_mean": 0.27964750418450524,
+      "message_age_mean_mean": 0.0,
+      "messages_delivered_mean": 47.8,
+      "mission_return_mean": 9.23705960419029,
+      "packet_delivery_ratio_mean": 0.48451530067935916,
+      "radius": 25.0
+    },
+    "joint_0p5_d5": {
+      "F1_mean": 0.7439164585541848,
+      "condition": "joint_0p5_d5",
+      "delay": 5,
+      "drop": 0.5,
+      "effective_neighbor_degree_mean": 1.61,
+      "final_entropy_mean": 0.34539118779911315,
+      "message_age_mean_mean": 5.0,
+      "messages_delivered_mean": 28.3,
+      "mission_return_mean": 7.869347496982664,
+      "packet_delivery_ratio_mean": 0.2940870120468594,
+      "radius": 25.0
+    },
+    "zero_noise": {
+      "F1_mean": 0.772705227149645,
+      "condition": "drop_0",
+      "delay": 0,
+      "drop": 0.0,
+      "effective_neighbor_degree_mean": 1.6766666666666667,
+      "final_entropy_mean": 0.2490310511234462,
+      "message_age_mean_mean": 0.0,
+      "messages_delivered_mean": 100.6,
+      "mission_return_mean": 9.967555672302842,
+      "packet_delivery_ratio_mean": 1.0,
+      "radius": 25.0
+    }
+  },
+  "stress_sanity": {
+    "delivery_ratio_decreases_with_drop": true,
+    "message_age_matches_delay_5": true,
+    "severe_joint_entropy_above_zero_noise": true,
+    "severe_joint_f1_below_zero_noise": true,
+    "severe_joint_return_below_zero_noise": true
+  },
+  "task_id": "S3-R0-UNCERTAIN-COMMUNICATION-ENVIRONMENT-AND-VALIDATION-R1",
+  "tests": {
+    "base_environment": "34 passed, 1 skipped (torch unavailable in base Python)",
+    "base_log": "D:\\AgentData\\RAC-MIPP\\S3-R0\\pytest_base.txt",
+    "formal_environment": "35 passed, 13 warnings",
+    "formal_log": "D:\\AgentData\\RAC-MIPP\\S3-R0\\pytest_formal.txt"
+  },
+  "unique_next_task": "WAIT_FOR_CONTROLLER_DECISION",
+  "unresolved": [],
+  "validation_role": "VALIDATION",
+  "validation_seeds": [
+    15001,
+    15002,
+    15003,
+    15004,
+    15005,
+    15006,
+    15007,
+    15008,
+    15009,
+    15010
+  ],
+  "zero_noise_max_absolute_gaps": {
+    "F1": 0.0,
+    "entropy": 0.0,
+    "episode_length": 0.0,
+    "measurement_count": 0.0,
+    "mission_return": 0.0,
+    "path_length": 0.0
+  }
+}
