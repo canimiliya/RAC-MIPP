@@ -1,0 +1,38 @@
+{
+  "task_id": "S1-R1-ORIGINAL-COMA-FORMAL-REPRODUCTION-R1",
+  "audit_revision": 1,
+  "audited_branch_head_before_closeout_patch": "7c15fc9d4883d3d3d1a5efbad8f90bf237c6ee33",
+  "gates": {
+    "S1_R0_INTEGRATED_TO_MAIN": true,
+    "FORMAL_PROTOCOL_PREREGISTERED": true,
+    "NO_TEST_LEAKAGE": true,
+    "FORMAL_TRAINING_COMPLETED": true,
+    "FORMAL_CHECKPOINT_TRACEABLE": true,
+    "TABLE1_50_TRIAL_EVAL_COMPLETED": true,
+    "NO_MISSING_TABLE1_METRICS": true,
+    "QUANTITATIVE_PARITY_ACCEPTED": true,
+    "QUALITATIVE_REPRODUCTION": true,
+    "UPSTREAM_COMMIT_CORRECT": true,
+    "NO_ALGORITHM_CHANGE": true,
+    "PROJECT_TESTS_PASS": true,
+    "REMOTE_BRANCH_PUSHED": true
+  },
+  "quantitative_parity": "STRONG_PARITY",
+  "test_leakage": false,
+  "formal_training_completed": true,
+  "formal_checkpoint_traceable": true,
+  "table1_trials": 50,
+  "evidence": {
+    "protocol": "docs/S1_FORMAL_REPRO_PROTOCOL.md",
+    "preregistration": "artifacts/s1/r1/formal_repro_preregistration.json",
+    "run_manifest": "artifacts/s1/r1/formal_run_manifest.json",
+    "formal_summary": "artifacts/s1/r1/formal_repro_summary.json",
+    "trials": "artifacts/s1/r1/table1_trials.csv",
+    "table1_summary": "artifacts/s1/r1/table1_summary.json",
+    "qualitative_plot": "artifacts/s1/r1/small_plots/formal_qualitative_rollout.png",
+    "execution_recovery": "artifacts/s1/r1/execution_recovery.json"
+  },
+  "final_label": "PASS_S1_R1_ORIGINAL_COMA_REPRODUCTION_READY_FOR_CLOSEOUT",
+  "controller_recommendation": "READY_TO_CLOSE_S1",
+  "unique_next_task": "WAIT_FOR_CONTROLLER_DECISION"
+}

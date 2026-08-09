@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "task_id": "S1-R1-ORIGINAL-COMA-FORMAL-REPRODUCTION-R1",
+  "run_id": "S1R1-COMA-SEED-20260809-R1",
+  "formal_run": true,
+  "debug_run": false,
+  "status": "COMPLETED",
+  "initial_git_head": "724b09091a163c3efe7290fc57a4168c8040aab9",
+  "resume_git_head": "103fd606d569d8277f8bec03e21cb17d0721c9d4",
+  "upstream_commit": "1e9bdc3ba90f707ce79797468f533f5733c65e4b",
+  "config_hash": "233395837a86a020c38369072be22ccbc51d4ba8640c4da1bb73431c6b38f6bf",
+  "protocol_hash": "62170e7dde6ac306ea3a0e4559600800e382f54a5afeecba2f8be5f6cdab6ad5",
+  "seed": 20260809,
+  "start_time": "2026-08-09T05:59:33.165621+00:00",
+  "end_time": "2026-08-09T10:29:34.788696+00:00",
+  "wall_clock_seconds": 16078.112263441086,
+  "completed_updates": 1500,
+  "agent_transitions": 4500000,
+  "missions": 75000,
+  "gpu": "NVIDIA GeForce RTX 5060 Ti",
+  "torch_version": "2.11.0+cu130",
+  "cuda_runtime": "13.0",
+  "execution_attempts": [
+    {
+      "attempt": 1,
+      "git_head": "724b09091a163c3efe7290fc57a4168c8040aab9",
+      "environment_workers": 20,
+      "start_time": "2026-08-09T05:59:33.165621+00:00",
+      "end_time": "2026-08-09T07:27:43.854030+00:00",
+      "status": "FAILED",
+      "error": "MemoryError((493, 493), dtype('float32'))"
+    },
+    {
+      "attempt": 2,
+      "git_head": "103fd606d569d8277f8bec03e21cb17d0721c9d4",
+      "environment_workers": 10,
+      "start_time": "2026-08-09T07:29:47.363841+00:00",
+      "end_time": "2026-08-09T10:29:34.788696+00:00",
+      "status": "COMPLETED",
+      "error": null
+    }
+  ],
+  "local_runtime_manifest": {
+    "path": "D:\\AgentData\\RAC-MIPP\\S1-R1\\runs\\S1R1-COMA-SEED-20260809-R1\\run_manifest.json",
+    "sha256": "8e83d67e53da087d59019101846b70ed59f5f20a0e7c842db604eba27d4425b7",
+    "size": 2304
+  },
+  "local_only_checkpoints": {
+    "final_actor": {
+      "path": "D:\\AgentData\\RAC-MIPP\\S1-R1\\runs\\S1R1-COMA-SEED-20260809-R1\\checkpoints\\final_actor_state.pt",
+      "sha256": "baf19c28c9140cecac18e0aa26baa8cd0b7bc1e11e37376e2b23f73438ef0e65",
+      "size": 9108403
+    },
+    "final_training_state": {
+      "path": "D:\\AgentData\\RAC-MIPP\\S1-R1\\runs\\S1R1-COMA-SEED-20260809-R1\\checkpoints\\final_training_state.pt",
+      "sha256": "4e2624c266e08a8aa2487fe58a166884370c516b3f05e2d0b189773a550fd193",
+      "size": 63228477
+    }
+  }
+}

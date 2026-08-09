@@ -173,6 +173,33 @@ def set_all_seeds(seed: int) -> None:
         torch.cuda.manual_seed_all(seed)
 
 
+def paper_fixed_state(agent_id: int):
+    import numpy as np
+
+    return np.array(PAPER_FIXED_POSITIONS[agent_id])
+
+
+def exact_fast_ground_truth(pk, x_dim: int, y_dim: int, episode: int):
+    import numpy as np
+
+    del pk
+    # The checked-in generator computes a random field but returns only this
+    # axis-aligned field. It resets NumPy immediately before these draws.
+    np.random.seed(episode)
+    split_idx = np.random.randint(4)
+    percentage_idx = np.random.randint(30, 61)
+    field = np.zeros((y_dim, x_dim))
+    if split_idx == 0:
+        field[: int((y_dim * percentage_idx) / 100), :] = 1
+    elif split_idx == 1:
+        field[int((y_dim * (1 - percentage_idx)) / 100) :, :] = 1
+    elif split_idx == 2:
+        field[:, : int((x_dim * percentage_idx) / 100)] = 1
+    else:
+        field[:, int((x_dim * (1 - percentage_idx)) / 100) :] = 1
+    return field
+
+
 def install_adapters() -> list[str]:
     import numpy as np
     import torch
@@ -192,29 +219,11 @@ def install_adapters() -> list[str]:
 
     def fixed_state(self, agent_id: int, episode: int):
         del self, episode
-        return np.array(PAPER_FIXED_POSITIONS[agent_id])
+        return paper_fixed_state(agent_id)
 
     AgentStateSpace.get_random_agent_state = fixed_state
 
     original_ground_truth = ground_truths.gaussian_random_field
-
-    def exact_fast_ground_truth(pk, x_dim: int, y_dim: int, episode: int):
-        del pk
-        # The checked-in generator computes a random field but returns only this
-        # axis-aligned field. It resets NumPy immediately before these draws.
-        np.random.seed(episode)
-        split_idx = np.random.randint(4)
-        percentage_idx = np.random.randint(30, 61)
-        field = np.zeros((y_dim, x_dim))
-        if split_idx == 0:
-            field[: int((y_dim * percentage_idx) / 100), :] = 1
-        elif split_idx == 1:
-            field[int((y_dim * (1 - percentage_idx)) / 100) :, :] = 1
-        elif split_idx == 2:
-            field[:, : int((x_dim * percentage_idx) / 100)] = 1
-        else:
-            field[:, int((x_dim * (1 - percentage_idx)) / 100) :] = 1
-        return field
 
     # Prove exact output and NumPy post-state parity before installing fast path.
     for episode in (1, 17):

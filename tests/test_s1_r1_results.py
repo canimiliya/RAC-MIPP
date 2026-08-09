@@ -38,3 +38,20 @@ def test_strong_parity_and_leakage_barrier():
     assert summary["checkpoint_selection"] == "FINAL_CHECKPOINT_ONLY"
     assert summary["test_leakage"] is False
     assert (ARTIFACTS / "small_plots/formal_qualitative_rollout.png").stat().st_size > 0
+
+
+def test_tracked_run_manifest_and_completion_gates():
+    manifest = json.loads(
+        (ARTIFACTS / "formal_run_manifest.json").read_text(encoding="utf-8")
+    )
+    audit = json.loads(
+        (ARTIFACTS / "completion_gate_audit.json").read_text(encoding="utf-8")
+    )
+    assert manifest["formal_run"] is True
+    assert manifest["status"] == "COMPLETED"
+    assert manifest["completed_updates"] == 1500
+    assert manifest["agent_transitions"] == 4_500_000
+    assert manifest["missions"] == 75_000
+    assert all(audit["gates"].values())
+    assert audit["quantitative_parity"] == "STRONG_PARITY"
+    assert audit["test_leakage"] is False

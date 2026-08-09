@@ -40,6 +40,8 @@
   },
   "runtime_manifest": "D:\\AgentData\\RAC-MIPP\\S1-R1\\runs\\S1R1-COMA-SEED-20260809-R1\\run_manifest.json",
   "runtime_manifest_sha256": "8e83d67e53da087d59019101846b70ed59f5f20a0e7c842db604eba27d4425b7",
+  "tracked_run_manifest": "artifacts/s1/r1/formal_run_manifest.json",
+  "completion_gate_audit": "artifacts/s1/r1/completion_gate_audit.json",
   "local_only_artifacts": {
     "final_actor": {
       "path": "D:\\AgentData\\RAC-MIPP\\S1-R1\\runs\\S1R1-COMA-SEED-20260809-R1\\checkpoints\\final_actor_state.pt",
