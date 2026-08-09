@@ -1,0 +1,175 @@
+{
+  "all_smoke_gates_pass": true,
+  "attempt_history": [
+    {
+      "attempt": "initial_evidence_write",
+      "reason": "NumPy bool_ was not JSON serializable",
+      "resolution": "Cast machine-readable gate values to built-in bool",
+      "scientific_pipeline_completed": true,
+      "status": "FAILED_AFTER_PIPELINE"
+    }
+  ],
+  "compatibility_changes": [
+    "BatchMemory.get('mask'): transition.masks -> transition.mask"
+  ],
+  "config": {
+    "overrides": {
+      "experiment": {
+        "constraints": {
+          "budget": 1
+        },
+        "missions": {
+          "n_episodes": 1
+        }
+      },
+      "networks": {
+        "batch_number": 1,
+        "batch_size": 8,
+        "data_passes": 1
+      }
+    },
+    "path": "D:\\Desktop\\my_project\\RAC-MIPP\\configs\\s1\\r0\\smoke.yaml",
+    "sha256": "9429d6004c8da62b98adaf3c03dff2f25fa9694cf241eb9e60c844dbb3fbab4e"
+  },
+  "cuda": {
+    "available": true,
+    "capability": [
+      12,
+      0
+    ],
+    "cuda_runtime": "13.0",
+    "device": "NVIDIA GeForce RTX 5060 Ti",
+    "kernel_backward_pass": true,
+    "probe_loss": 518.7217407226562,
+    "torch_version": "2.11.0+cu130"
+  },
+  "elapsed_seconds": 4.69,
+  "eval_smoke": {
+    "absolute_return": -0.2618197213485837,
+    "episode_return": -0.6364245656877756,
+    "ground_truth_positive_fraction": 0.4482758620689655,
+    "ground_truth_shape": [
+      493,
+      493
+    ],
+    "rewards": [
+      -0.30155217833817005,
+      -0.33487238734960556
+    ],
+    "trajectory_positions_m": [
+      [
+        [
+          25,
+          0,
+          15
+        ],
+        [
+          50,
+          45,
+          15
+        ],
+        [
+          30,
+          5,
+          15
+        ],
+        [
+          50,
+          15,
+          15
+        ]
+      ],
+      [
+        [
+          25,
+          5,
+          15
+        ],
+        [
+          50,
+          50,
+          15
+        ],
+        [
+          30,
+          10,
+          15
+        ],
+        [
+          50,
+          20,
+          15
+        ]
+      ],
+      [
+        [
+          25,
+          10,
+          15
+        ],
+        [
+          45,
+          50,
+          15
+        ],
+        [
+          30,
+          15,
+          15
+        ],
+        [
+          50,
+          25,
+          15
+        ]
+      ]
+    ],
+    "trajectory_steps": 3
+  },
+  "formal_repro_training_started": false,
+  "gates": {
+    "action_pipeline": true,
+    "backward": true,
+    "checkpoint_load": true,
+    "checkpoint_write": true,
+    "environment_construction": true,
+    "environment_reset": true,
+    "environment_step": true,
+    "episode_termination": true,
+    "evaluation_episode": true,
+    "loss_computation": true,
+    "metric_output": true,
+    "model_forward": true,
+    "multi_agent_observation": true,
+    "optimizer_step": true,
+    "qualitative_output": true,
+    "reward_logging": true,
+    "upstream_import": true
+  },
+  "local_only_artifacts": {
+    "checkpoint": "D:\\AgentData\\RAC-MIPP\\S1-R0\\runs\\upstream_smoke\\smoke_actor_state.pt",
+    "checkpoint_sha256": "9e38f9467af6a0b83e5d066af9e07dc37c33d43392ce11ea7082531841afc2fc",
+    "tensorboard": "D:\\AgentData\\RAC-MIPP\\S1-R0\\runs\\upstream_smoke\\tensorboard"
+  },
+  "long_training_started": false,
+  "not_paper_result": true,
+  "runtime_root": "D:\\AgentData\\RAC-MIPP\\S1-R0",
+  "smoke_only": true,
+  "task_id": "S1-R0-UPSTREAM-REPRO-CONTRACT-ENV-SMOKE-R1",
+  "train_smoke": {
+    "absolute_return": -0.18265110921114686,
+    "actor_loss": -0.01660685538265534,
+    "actor_parameters_changed": true,
+    "batches": 1,
+    "critic_loss": 0.005142149981111288,
+    "critic_parameters_changed": true,
+    "episode_return": -0.30021535232663155,
+    "rewards": [
+      -0.19862284511327744,
+      -0.10159250721335411
+    ],
+    "transitions": 8
+  },
+  "upstream_commit": "1e9bdc3ba90f707ce79797468f533f5733c65e4b",
+  "upstream_unmodified": true
+}

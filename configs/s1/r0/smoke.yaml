@@ -1,0 +1,16 @@
+task_id: S1-R0-UPSTREAM-REPRO-CONTRACT-ENV-SMOKE-R1
+smoke_only: true
+not_paper_result: true
+seed: 7
+episode_index_train: 1
+episode_index_eval: 2
+overrides:
+  experiment:
+    constraints:
+      budget: 1
+    missions:
+      n_episodes: 1
+  networks:
+    batch_size: 8
+    batch_number: 1
+    data_passes: 1
