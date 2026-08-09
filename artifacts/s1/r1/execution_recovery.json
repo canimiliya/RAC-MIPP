@@ -1,0 +1,24 @@
+{
+  "task_id": "S1-R1-ORIGINAL-COMA-FORMAL-REPRODUCTION-R1",
+  "run_id": "S1R1-COMA-SEED-20260809-R1",
+  "recovery_revision": 1,
+  "scientific_protocol_revision": 1,
+  "scientific_protocol_changed": false,
+  "failed_attempt": {
+    "git_head": "724b09091a163c3efe7290fc57a4168c8040aab9",
+    "configured_environment_workers": 20,
+    "status": "FAILED_EXECUTION_MEMORY_PRESSURE",
+    "start_time": "2026-08-09T05:59:33.165621+00:00",
+    "end_time": "2026-08-09T07:27:43.854030+00:00",
+    "last_completed_update_in_log": 503,
+    "last_atomic_checkpoint_update": 500,
+    "error": "NumPy ArrayMemoryError while allocating a 493x493 float32 temporary array in an environment worker"
+  },
+  "recovery": {
+    "mode": "RESUME_FROM_ATOMIC_CHECKPOINT",
+    "effective_environment_workers": 10,
+    "reason": "Reduce host-memory pressure. Per-mission RNG, ascending transition order, actor snapshot, training budget, optimizer, losses, and all scientific settings remain unchanged.",
+    "discarded_uncheckpointed_updates": [501, 502, 503],
+    "test_evaluation_started": false
+  }
+}

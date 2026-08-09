@@ -59,6 +59,12 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--resume", action="store_true")
     parser.add_argument("--debug-updates", type=int, default=1)
+    parser.add_argument(
+        "--environment-workers",
+        type=int,
+        default=None,
+        help="Execution-only worker cap; scientific mission RNG/order stay frozen.",
+    )
     return parser.parse_args()
 
 
@@ -468,6 +474,12 @@ def training(args, config: dict, prereg: dict, params: dict, paths: dict[str, Pa
     formal = not debug
     if formal and head == START_HEAD:
         raise RuntimeError("formal runner/preregistration must be committed before training")
+    configured_workers = int(config["training"]["environment_workers"])
+    worker_count = int(args.environment_workers or configured_workers)
+    if worker_count < 1 or worker_count > configured_workers:
+        raise ValueError(
+            f"environment workers must be within [1,{configured_workers}]"
+        )
     manifest = {
         "task_id": TASK_ID,
         "run_id": run_id,
@@ -485,13 +497,46 @@ def training(args, config: dict, prereg: dict, params: dict, paths: dict[str, Pa
         "gpu": torch.cuda.get_device_name(0),
         "torch_version": torch.__version__,
         "cuda_runtime": torch.version.cuda,
+        "configured_environment_workers": configured_workers,
+        "effective_environment_workers": worker_count,
+        "execution_attempts": [],
     }
+    prior_wall_clock_seconds = 0.0
     if args.resume:
         if not manifest_path.is_file() or not latest_path.is_file():
             raise RuntimeError("resume requested but manifest/checkpoint is missing")
         old_manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        if old_manifest["config_hash"] != prereg["config_hash"] or old_manifest[
+            "protocol_hash"
+        ] != prereg["protocol_hash"]:
+            raise RuntimeError("resume manifest scientific contract mismatch")
+        previous_attempts = old_manifest.get("execution_attempts", [])
+        if not previous_attempts:
+            previous_attempts = [
+                {
+                    "attempt": 1,
+                    "git_head": old_manifest["git_head"],
+                    "environment_workers": old_manifest.get(
+                        "effective_environment_workers", configured_workers
+                    ),
+                    "start_time": old_manifest["start_time"],
+                    "end_time": old_manifest.get("end_time"),
+                    "status": old_manifest.get("status"),
+                    "error": old_manifest.get("error"),
+                }
+            ]
+        if old_manifest.get("wall_clock_seconds") is not None:
+            prior_wall_clock_seconds = float(old_manifest["wall_clock_seconds"])
+        elif old_manifest.get("end_time"):
+            prior_wall_clock_seconds = (
+                datetime.fromisoformat(old_manifest["end_time"])
+                - datetime.fromisoformat(old_manifest["start_time"])
+            ).total_seconds()
         manifest["start_time"] = old_manifest["start_time"]
         manifest["resume_time"] = utc_now()
+        manifest["git_head"] = old_manifest["git_head"]
+        manifest["resume_git_head"] = head
+        manifest["execution_attempts"] = previous_attempts
     elif manifest_path.exists():
         raise RuntimeError(f"run directory already exists: {paths['run']}")
     write_json(manifest_path, manifest)
@@ -509,9 +554,26 @@ def training(args, config: dict, prereg: dict, params: dict, paths: dict[str, Pa
     if args.resume:
         completed_updates, next_episode = restore_checkpoint(wrapper, latest_path, manifest)
 
-    metrics_path = paths["logs"] / "training_metrics.jsonl"
+    attempt_number = len(manifest["execution_attempts"]) + 1
+    manifest["execution_attempts"].append(
+        {
+            "attempt": attempt_number,
+            "git_head": head,
+            "environment_workers": worker_count,
+            "start_time": utc_now(),
+            "end_time": None,
+            "status": "RUNNING",
+            "error": None,
+        }
+    )
+    write_json(manifest_path, manifest)
+    metrics_name = (
+        "training_metrics.jsonl"
+        if attempt_number == 1
+        else f"training_metrics_attempt_{attempt_number}.jsonl"
+    )
+    metrics_path = paths["logs"] / metrics_name
     training_started = time.time()
-    worker_count = int(config["training"]["environment_workers"])
     collector_actor = paths["run"] / "collector_actor_state.pt"
     context = multiprocessing.get_context("spawn")
     executor = ProcessPoolExecutor(
@@ -612,6 +674,7 @@ def training(args, config: dict, prereg: dict, params: dict, paths: dict[str, Pa
                     "optimization_seconds": optimization_seconds,
                     "cycle_seconds": time.time() - cycle_started,
                     "timestamp": utc_now(),
+                    "execution_attempt": attempt_number,
                 }
                 metrics_stream.write(json.dumps(row, sort_keys=True) + "\n")
                 writer.add_scalar("formal/train_return_mean", row["return_mean"], completed_updates)
@@ -642,7 +705,9 @@ def training(args, config: dict, prereg: dict, params: dict, paths: dict[str, Pa
                 "agent_transitions": completed_updates
                 * int(config["training"]["transitions_per_collection"]),
                 "missions": next_episode - 1,
-                "wall_clock_seconds": time.time() - training_started,
+                "wall_clock_seconds": prior_wall_clock_seconds
+                + time.time()
+                - training_started,
                 "final_actor": str(final_actor),
                 "final_actor_sha256": sha256(final_actor),
                 "final_actor_size": final_actor.stat().st_size,
@@ -651,9 +716,18 @@ def training(args, config: dict, prereg: dict, params: dict, paths: dict[str, Pa
                 "formal_training_completed": formal and completed_updates == 1500,
             }
         )
+        manifest["execution_attempts"][-1].update(
+            {"status": "COMPLETED", "end_time": manifest["end_time"]}
+        )
         write_json(manifest_path, manifest)
     except BaseException as exc:
         manifest.update({"status": "FAILED", "end_time": utc_now(), "error": repr(exc)})
+        manifest["execution_attempts"][-1].update(
+            {"status": "FAILED", "end_time": manifest["end_time"], "error": repr(exc)}
+        )
+        manifest["wall_clock_seconds"] = (
+            prior_wall_clock_seconds + time.time() - training_started
+        )
         write_json(manifest_path, manifest)
         raise
     finally:
