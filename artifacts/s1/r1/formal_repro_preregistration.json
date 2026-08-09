@@ -1,0 +1,72 @@
+{
+  "task_id": "S1-R1-ORIGINAL-COMA-FORMAL-REPRODUCTION-R1",
+  "protocol_revision": 1,
+  "frozen_before_formal_training": true,
+  "frozen_at": "2026-08-09T00:00:00+08:00",
+  "git_start_head": "8b94812233cbd2f95005cd9c103d725d9683d0f8",
+  "upstream_commit": "1e9bdc3ba90f707ce79797468f533f5733c65e4b",
+  "formal_run_ids": ["S1R1-COMA-SEED-20260809-R1"],
+  "training_seed": 20260809,
+  "training_seed_count": 1,
+  "total_budget": {
+    "update_cycles": 1500,
+    "agent_transitions": 4500000,
+    "missions": 75000,
+    "source": "CODE_DERIVED",
+    "evidence": "Original uploaded params.yaml says n_episodes 1500 means full batch fillings; paper-aligned configuration has 600 transitions per batch and five batches per filling."
+  },
+  "collection_update_cadence": {
+    "agent_transitions_per_collection": 3000,
+    "missions_per_collection": 50,
+    "optimization_epochs": 5,
+    "batches_per_epoch": 5,
+    "batch_size": 600
+  },
+  "optimizer": "Adam",
+  "actor_learning_rate": 0.00001,
+  "critic_learning_rate": 0.0001,
+  "gamma": 0.99,
+  "td_lambda": 0.8,
+  "epsilon_schedule": {"start": 0.5, "end": 0.02, "anneal_training_missions": 10000},
+  "target_update": {
+    "mode": "hard",
+    "every_agent_transitions": 30000,
+    "every_update_cycles": 10,
+    "semantics": "TD targets use CriticLearner.target_critic, synchronized from online critic before cycles 0,10,..."
+  },
+  "initial_positions": {
+    "semantics": "PAPER_ALIGNED_FIXED",
+    "positions_m": [[10,10,15],[40,10,15],[40,40,15],[10,40,15]]
+  },
+  "checkpoint_rule": "Periodic full-state checkpoints are crash recovery only; the selected model is the final actor after update cycle 1500.",
+  "model_selection_rule": "FINAL_CHECKPOINT_ONLY",
+  "stopping_criterion": "EXACTLY_1500_UPDATE_CYCLES",
+  "evaluation": {
+    "run_once_after_training": true,
+    "trials": 50,
+    "trial_seeds": {"start": 20001, "stop_inclusive": 20050},
+    "agents": 4,
+    "communication_radius_m": 25,
+    "measurements_per_uav": 15,
+    "action_selection": "GREEDY_ARGMAX",
+    "std_ddof": 1
+  },
+  "primary_metric": ["final_weighted_target_region_entropy", "positive_class_f1"],
+  "paper_target": {
+    "entropy_mean": 0.2842,
+    "entropy_sd": 0.0408,
+    "f1_mean": 0.7858,
+    "f1_sd": 0.0308
+  },
+  "acceptance": {
+    "STRONG_PARITY": "both absolute mean gaps <= 1 paper-reported SD",
+    "ACCEPTABLE_PARITY": "both absolute mean gaps <= 2 paper-reported SD and no qualitative contradiction",
+    "MAJOR_GAP": "either absolute mean gap > 2 paper-reported SD"
+  },
+  "test_leakage_prohibited": true,
+  "formal_checkpoint_selection_uses_test": false,
+  "config_path": "configs/s1/r1/formal.yaml",
+  "protocol_path": "docs/S1_FORMAL_REPRO_PROTOCOL.md",
+  "config_hash": "644038253e39b99e701676d309d84b5ca0bdb42a6a5dc5f0fe2fccba3b7ff815",
+  "protocol_hash": "2649dc8b38bf4a34df88c437e3e2296377546440de8f110dce066abfdf04d64f"
+}

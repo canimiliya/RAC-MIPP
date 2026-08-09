@@ -1,0 +1,56 @@
+task_id: S1-R1-ORIGINAL-COMA-FORMAL-REPRODUCTION-R1
+protocol_revision: 1
+formal_run_id: S1R1-COMA-SEED-20260809-R1
+training_seed: 20260809
+training:
+  update_cycles: 1500
+  transitions_per_collection: 3000
+  episodes_per_collection: 50
+  transitions_per_episode: 60
+  checkpoint_every_updates: 25
+  model_selection: final_checkpoint
+evaluation:
+  trials: 50
+  seeds:
+    start: 20001
+    stop_inclusive: 20050
+  deterministic_action: argmax
+  run_once_after_training: true
+  qualitative_trial_id: 1
+paper_targets:
+  entropy_mean: 0.2842
+  entropy_sd: 0.0408
+  f1_mean: 0.7858
+  f1_sd: 0.0308
+acceptance:
+  strong_max_standardized_gap: 1.0
+  acceptable_max_standardized_gap: 2.0
+overrides:
+  environment:
+    seed: 3
+  experiment:
+    constraints:
+      budget: 14
+    uav:
+      communication_range: 25
+      fix_range: true
+      failure_rate: 0
+    missions:
+      n_episodes: 1500
+      n_agents: 4
+      eps_max: 0.5
+      eps_min: 0.02
+      eps_anneal_phase: 10000
+      use_eps: true
+  networks:
+    data_passes: 5
+    batch_size: 600
+    batch_number: 5
+    copy_rate: 10
+    gamma: 0.99
+    lambda: 0.8
+    actor:
+      learning_rate: 0.00001
+    critic:
+      learning_rate: 0.0001
+      target_update_mode: hard
