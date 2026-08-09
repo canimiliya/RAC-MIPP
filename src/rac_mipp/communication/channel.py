@@ -85,6 +85,7 @@ class ChannelModel:
         if ids != list(range(len(positions))):
             raise ValueError("payload ids and position indexes must be contiguous")
         step = int(step)
+        neighbor_mask = self.neighbor_mask(positions)
         for receiver in ids:
             for sender in ids:
                 if sender == receiver:
@@ -95,7 +96,7 @@ class ChannelModel:
                         - np.asarray(positions[receiver], dtype=float)
                     )
                 )
-                eligible = distance <= self.config.communication_radius
+                eligible = bool(neighbor_mask[receiver, sender])
                 self._record(step, "ATTEMPTED", sender, receiver, step, None, None, distance)
                 if not eligible:
                     self._record(step, "OUT_OF_RANGE", sender, receiver, step, None, None, distance)
@@ -148,6 +149,19 @@ class ChannelModel:
                 distance,
             )
         return delivered
+
+    def neighbor_mask(self, positions: Sequence[Any]) -> np.ndarray:
+        """Return the directed send-time range mask with a false diagonal."""
+
+        copied = [np.asarray(position, dtype=float).copy() for position in positions]
+        mask = np.zeros((len(copied), len(copied)), dtype=bool)
+        for receiver, own in enumerate(copied):
+            for sender, other in enumerate(copied):
+                if sender != receiver:
+                    mask[receiver, sender] = bool(
+                        np.linalg.norm(other - own) <= self.config.communication_radius
+                    )
+        return mask
 
     def _record(
         self,

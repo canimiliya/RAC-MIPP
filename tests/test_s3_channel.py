@@ -35,6 +35,18 @@ def test_send_time_radius_boundary(distance, eligible):
     )
 
 
+def test_neighbor_mask_is_directed_non_self_and_inclusive():
+    channel = ChannelModel(ChannelConfig(0, 0, 25), 7)
+    mask = channel.neighbor_mask(
+        [np.array([0, 0, 5]), np.array([25, 0, 5]), np.array([30, 0, 5])]
+    )
+    assert mask.tolist() == [
+        [False, True, False],
+        [True, False, True],
+        [False, True, False],
+    ]
+
+
 def test_drop_zero_and_one_are_real_and_no_self_messages():
     positions = [np.array([0, 0, 5]), np.array([1, 0, 5])]
     good = ChannelModel(ChannelConfig(0, 0, 25), 1)

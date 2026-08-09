@@ -40,6 +40,8 @@ Real events produce `messages_attempted`, `messages_range_eligible`, `messages_d
 
 The reusable channel exposes delivered-message sets, delivery status through events, message age, sender/receiver IDs, and the radius-derived neighbor relation. Graph aggregation, recurrent memory, risk objectives, communication curriculum, and all S4/S5 algorithms are explicitly out of scope.
 
+`ChannelModel.neighbor_mask(positions)` exposes the boolean directed send-time mask used by the actual channel; its diagonal is always false and the radius boundary is inclusive.
+
 ## Frozen validation conditions
 
 - Zero noise: `drop=0`, `delay=0`, `radius=25 m`.
