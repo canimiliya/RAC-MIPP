@@ -4,14 +4,59 @@
   "library_root": ".papers",
   "pdfs_gitignored": true,
   "total_candidate_papers": 16,
-  "verified_count": 11,
-  "corrected_count": 5,
+  "verified_count": 9,
+  "corrected_count": 7,
   "unresolved_count": 0,
   "downloaded_count": 16,
   "not_downloaded_count": 0,
   "duplicate_files": 0,
   "invalid_pdfs": 0,
-  "integrity_check": "All 16 files passed lightweight %PDF- header and %%EOF trailer checks on 2026-08-08.",
+  "integrity_check": "All 16 files passed independent existence, non-empty, %PDF- header, %%EOF trailer, byte-size, SHA-256, and extracted title/author identity checks on 2026-08-09.",
+  "correction_history": [
+    {
+      "audit_date": "2026-08-09",
+      "paper_id": "P04",
+      "field": "doi",
+      "previous_value": null,
+      "corrected_value": "10.52202/068431-1787",
+      "reason": "The official NeurIPS 2022 proceedings page supplies the DOI; the earlier manifest omitted it.",
+      "authoritative_source": "https://proceedings.neurips.cc/paper_files/paper/2022/hash/9c1535a02f0ce079433344e14d910597-Abstract-Datasets_and_Benchmarks.html"
+    },
+    {
+      "audit_date": "2026-08-09",
+      "paper_id": "P13",
+      "field": "doi",
+      "previous_value": null,
+      "corrected_value": "10.52202/085713-5150",
+      "reason": "The official NeurIPS 2025 proceedings page supplies the DOI; the earlier manifest omitted it.",
+      "authoritative_source": "https://proceedings.neurips.cc/paper_files/paper/2025/hash/e26502ce357ce3015e8778f0e85d4b39-Abstract-Conference.html"
+    },
+    {
+      "audit_date": "2026-08-09",
+      "paper_id": "P14",
+      "field": "doi_and_venue",
+      "previous_value": {
+        "doi": null,
+        "venue": "NeurIPS 2025"
+      },
+      "corrected_value": {
+        "doi": "10.52202/085713-1468",
+        "venue": "NeurIPS 2025, Main Conference Track"
+      },
+      "reason": "The official NeurIPS 2025 proceedings page supplies the DOI and identifies the Main Conference Track.",
+      "authoritative_source": "https://proceedings.neurips.cc/paper_files/paper/2025/hash/3e8d9bf1dd1eb9d3d9d500fb3543c87b-Abstract-Conference.html"
+    },
+    {
+      "audit_date": "2026-08-09",
+      "paper_id": "P15",
+      "field": "paper_type",
+      "previous_value": "RJCIA 2026 short paper / PFIA 2026; arXiv preprint",
+      "corrected_value": "RJCIA 2026 Long paper / PFIA 2026; arXiv preprint",
+      "reason": "The official OpenReview RJCIA 2026 submission listing labels this paper RJCIA2026 Long; the earlier short-paper classification was incorrect.",
+      "authoritative_source": "https://openreview.net/submissions?venue=PFIA.fr%2F2026%2FConference%2FRJCIA",
+      "cross_check_source": "https://cv.hal.science/laetitia-matignon"
+    }
+  ],
   "papers": [
     {
       "id": "P01",
@@ -77,17 +122,17 @@
       "authors": ["Chao Yu", "Akash Velu", "Eugene Vinitsky", "Jiaxuan Gao", "Yu Wang", "Alexandre Bayen", "Yi Wu"],
       "year": 2022,
       "venue": "NeurIPS 2022, Datasets and Benchmarks",
-      "doi": null,
+      "doi": "10.52202/068431-1787",
       "arxiv_id": "2103.01955",
       "category": "01_MARL_BASELINES",
       "metadata_status": "CORRECTED",
-      "candidate_metadata_note": "Candidate omitted the comma in the canonical title; official NeurIPS record confirms the title and venue.",
+      "candidate_metadata_note": "Candidate omitted the comma in the canonical title. The official NeurIPS record confirms the title and Datasets and Benchmarks track; the 2026-08-09 final audit also restored the previously omitted proceedings DOI.",
       "pdf_status": "DOWNLOADED",
       "local_relative_path": ".papers/01_MARL_BASELINES/P04_Yu_2022_NeurIPS_MAPPO.pdf",
       "filename": "P04_Yu_2022_NeurIPS_MAPPO.pdf",
       "file_size_bytes": 16261854,
       "sha256": "b7577e38c48e898cc93a1438c266e546091d20a75dbad8d956000a1b42ab0b97",
-      "source_page": "https://nips.cc/virtual/2022/poster/55717",
+      "source_page": "https://proceedings.neurips.cc/paper_files/paper/2022/hash/9c1535a02f0ce079433344e14d910597-Abstract-Datasets_and_Benchmarks.html",
       "pdf_source": "https://arxiv.org/pdf/2103.01955"
     },
     {
@@ -144,7 +189,7 @@
       "filename": "P07_Velickovic_2018_Graph_Attention_Networks.pdf",
       "file_size_bytes": 1637828,
       "sha256": "a7d811a44e1c65bf27da3a01859f23a8edbe33b8f96114b4b5066aedb078f284",
-      "source_page": "https://openreview.net/group?id=ICLR.cc/2018/Conference",
+      "source_page": "https://openreview.net/forum?id=rJXMpikCZ",
       "pdf_source": "https://arxiv.org/pdf/1710.10903"
     },
     {
@@ -251,10 +296,11 @@
       "authors": ["Guang Yang", "Tianpei Yang", "Jingwen Qiao", "Yanqing Wu", "Jing Huo", "Xingguo Chen", "Yang Gao"],
       "year": 2025,
       "venue": "NeurIPS 2025, Main Conference Track",
-      "doi": null,
+      "doi": "10.52202/085713-5150",
       "arxiv_id": "2512.03528",
       "category": "04_RECENT_RELATED",
-      "metadata_status": "VERIFIED",
+      "metadata_status": "CORRECTED",
+      "candidate_metadata_note": "The earlier S0-R2 record omitted the official NeurIPS proceedings DOI; the 2026-08-09 final audit restored it.",
       "pdf_status": "DOWNLOADED",
       "local_relative_path": ".papers/04_RECENT_RELATED/P13_Yang_2025_NeurIPS_Communication-Constrained_MARL.pdf",
       "filename": "P13_Yang_2025_NeurIPS_Communication-Constrained_MARL.pdf",
@@ -269,17 +315,18 @@
       "canonical_title": "Empirical Study on Robustness and Resilience in Cooperative Multi-Agent Reinforcement Learning",
       "authors": ["Simin Li", "Zihao Mao", "Hanxiao Li", "Zonglei Jing", "Zhuohang Bian", "Jun Guo", "Li Wang", "Zhuoran Han", "Ruixiao Xu", "Xin Yu", "Chengdong Ma", "Yuqing Ma", "Bo An", "Yaodong Yang", "Weifeng Lv", "Xianglong Liu"],
       "year": 2025,
-      "venue": "NeurIPS 2025",
-      "doi": null,
+      "venue": "NeurIPS 2025, Main Conference Track",
+      "doi": "10.52202/085713-1468",
       "arxiv_id": "2510.11824",
       "category": "04_RECENT_RELATED",
-      "metadata_status": "VERIFIED",
+      "metadata_status": "CORRECTED",
+      "candidate_metadata_note": "The earlier S0-R2 record omitted the official NeurIPS proceedings DOI and track label; the 2026-08-09 final audit restored both.",
       "pdf_status": "DOWNLOADED",
       "local_relative_path": ".papers/04_RECENT_RELATED/P14_Li_2025_NeurIPS_Robustness_Resilience_MARL.pdf",
       "filename": "P14_Li_2025_NeurIPS_Robustness_Resilience_MARL.pdf",
       "file_size_bytes": 10293234,
       "sha256": "301831c3d5c1619c796ded9ab7404af33f25c789e81a20391d120aba6b470f1c",
-      "source_page": "https://proceedings.neurips.cc/paper_files/paper/2025/file/3e8d9bf1dd1eb9d3d9d500fb3543c87b-Paper-Conference.pdf",
+      "source_page": "https://proceedings.neurips.cc/paper_files/paper/2025/hash/3e8d9bf1dd1eb9d3d9d500fb3543c87b-Abstract-Conference.html",
       "pdf_source": "https://arxiv.org/pdf/2510.11824"
     },
     {
@@ -288,18 +335,18 @@
       "canonical_title": "A Survey of Multi-Agent Deep Reinforcement Learning with Graph Neural Network-Based Communication",
       "authors": ["Valentin Cuzin-Rambaud", "Laetitia Matignon", "Maxime Morge"],
       "year": 2026,
-      "venue": "RJCIA 2026 short paper / PFIA 2026; arXiv preprint",
+      "venue": "RJCIA 2026 Long paper / PFIA 2026; arXiv preprint",
       "doi": null,
       "arxiv_id": "2604.25972",
       "category": "04_RECENT_RELATED",
       "metadata_status": "CORRECTED",
-      "candidate_metadata_note": "Candidate supplied only year; current records identify an arXiv preprint and an RJCIA/PFIA 2026 short-paper submission.",
+      "candidate_metadata_note": "Candidate supplied only year. The earlier S0-R2 record incorrectly classified the RJCIA/PFIA paper as Short; the official OpenReview RJCIA 2026 listing identifies it as RJCIA2026 Long, cross-checked against arXiv and HAL/author records.",
       "pdf_status": "DOWNLOADED",
       "local_relative_path": ".papers/04_RECENT_RELATED/P15_Cuzin-Rambaud_2026_GNN_Communication_MARL_Survey.pdf",
       "filename": "P15_Cuzin-Rambaud_2026_GNN_Communication_MARL_Survey.pdf",
       "file_size_bytes": 360560,
       "sha256": "9809c9bec80876a01f32908ec0c52f66100da83b764f4054ad5c0b91bfbb5439",
-      "source_page": "https://arxiv.org/abs/2604.25972",
+      "source_page": "https://openreview.net/submissions?venue=PFIA.fr%2F2026%2FConference%2FRJCIA",
       "pdf_source": "https://arxiv.org/pdf/2604.25972"
     },
     {
