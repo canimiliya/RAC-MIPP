@@ -16,9 +16,13 @@
   },
   "recovery": {
     "mode": "RESUME_FROM_ATOMIC_CHECKPOINT",
+    "resume_git_head": "103fd606d569d8277f8bec03e21cb17d0721c9d4",
     "effective_environment_workers": 10,
     "reason": "Reduce host-memory pressure. Per-mission RNG, ascending transition order, actor snapshot, training budget, optimizer, losses, and all scientific settings remain unchanged.",
     "discarded_uncheckpointed_updates": [501, 502, 503],
-    "test_evaluation_started": false
+    "completed_update": 1500,
+    "completed_agent_transitions": 4500000,
+    "final_status": "COMPLETED",
+    "test_evaluation_started_only_after_training_completed": true
   }
 }

@@ -608,7 +608,7 @@ LONG_TRAINING_STARTED=false
 
 **状态：IN_PROGRESS**
 
-当前授权任务为 `S1-R1-ORIGINAL-COMA-FORMAL-REPRODUCTION-R1`。本任务只进行冻结协议下的原版 ipp-marl / COMA 正式长训练、50-trial Table I 评测与真实 synthetic rollout；不允许进入 S2 或开发 RAC-MIPP 新算法。
+`S1-R1-ORIGINAL-COMA-FORMAL-REPRODUCTION-R1` 已在任务分支完成冻结协议下的原版 ipp-marl / COMA 正式长训练、50-trial Table I 评测与真实 synthetic rollout，当前等待总控审计。S1 尚未由总控关闭；不允许进入 S2 或开发 RAC-MIPP 新算法。
 
 目标：先复现真实原方法，再做改进。
 
@@ -1036,10 +1036,10 @@ LAST_CLOSED_TASK_END_HEAD=8b94812233cbd2f95005cd9c103d725d9683d0f8
 # 14. UNIQUE NEXT TASK
 
 ```text
-UNIQUE_NEXT_TASK=S1-R1-ORIGINAL-COMA-FORMAL-REPRODUCTION-R1
+UNIQUE_NEXT_TASK=WAIT_FOR_CONTROLLER_DECISION
 ```
 
-当前任务只允许原版 `ipp-marl` / COMA 正式复现。`GPU_FORMAL_TRAINING_AUTHORIZED=true`，但 S2-S8 与所有 RAC-MIPP 新算法工作仍冻结；完成后必须等待总控决定。
+原版 `ipp-marl` / COMA 正式复现已完成并等待审计。S2-S8 与所有 RAC-MIPP 新算法工作仍冻结；未经总控决定不得继续。
 
 以下 S0-R0 Task Goal 保留为历史任务卡，不再是当前执行授权。
 

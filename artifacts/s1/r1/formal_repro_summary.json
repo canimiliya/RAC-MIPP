@@ -1,0 +1,102 @@
+{
+  "config_hash": "233395837a86a020c38369072be22ccbc51d4ba8640c4da1bb73431c6b38f6bf",
+  "formal_repro_training_started": true,
+  "formal_run_ids": [
+    "S1R1-COMA-SEED-20260809-R1"
+  ],
+  "git_head_at_training": "724b09091a163c3efe7290fc57a4168c8040aab9",
+  "long_training_started": true,
+  "no_algorithm_change": true,
+  "compatibility_patches": [
+    "BatchMemory mask accessor typo repair",
+    "paper-stated fixed four-corner initial positions",
+    "CriticLearner synchronized target critic used for TD targets",
+    "exact-output and RNG-parity synthetic-map dead-computation fast path",
+    "autograd anomaly tracing disabled for performance",
+    "scheduling-invariant CPU environment collection with ascending mission merge"
+  ],
+  "execution_recovery": {
+    "attempt_1": "FAILED_EXECUTION_MEMORY_PRESSURE_AFTER_UPDATE_503",
+    "resumed_from_atomic_update": 500,
+    "attempt_2": "COMPLETED_WITH_10_WORKERS",
+    "scientific_protocol_changed": false,
+    "evidence": "artifacts/s1/r1/execution_recovery.json"
+  },
+  "paper_code_differences": [
+    "Paper batch 600 and collection 3000 restored instead of cleaned-code defaults 60 and 300.",
+    "Paper target copy every 30000 transitions resolved against duplicate upstream target objects.",
+    "Paper fixed initial positions restored instead of active generated-position code.",
+    "Total 4500000-transition budget remains CODE_DERIVED, not PAPER_STATED."
+  ],
+  "protocol_hash": "62170e7dde6ac306ea3a0e4559600800e382f54a5afeecba2f8be5f6cdab6ad5",
+  "qualitative_reproduction": true,
+  "qualitative_result": {
+    "formal_trial_id": 1,
+    "seed": 20001,
+    "plot": "artifacts/s1/r1/small_plots/formal_qualitative_rollout.png",
+    "plot_sha256": "754401bdd60b0c69777060712ef363a8d1697cd407ea7232bca098d960131bc0",
+    "plot_size": 603597,
+    "source": "REAL_FORMAL_ROLLOUT"
+  },
+  "runtime_manifest": "D:\\AgentData\\RAC-MIPP\\S1-R1\\runs\\S1R1-COMA-SEED-20260809-R1\\run_manifest.json",
+  "runtime_manifest_sha256": "8e83d67e53da087d59019101846b70ed59f5f20a0e7c842db604eba27d4425b7",
+  "local_only_artifacts": {
+    "final_actor": {
+      "path": "D:\\AgentData\\RAC-MIPP\\S1-R1\\runs\\S1R1-COMA-SEED-20260809-R1\\checkpoints\\final_actor_state.pt",
+      "sha256": "baf19c28c9140cecac18e0aa26baa8cd0b7bc1e11e37376e2b23f73438ef0e65",
+      "size": 9108403
+    },
+    "final_training_state": {
+      "path": "D:\\AgentData\\RAC-MIPP\\S1-R1\\runs\\S1R1-COMA-SEED-20260809-R1\\checkpoints\\final_training_state.pt",
+      "sha256": "4e2624c266e08a8aa2487fe58a166884370c516b3f05e2d0b189773a550fd193",
+      "size": 63228477
+    },
+    "qualitative_npz": {
+      "path": "D:\\AgentData\\RAC-MIPP\\S1-R1\\runs\\S1R1-COMA-SEED-20260809-R1\\qualitative_trial_1.npz",
+      "sha256": "88182601612e5725f5526a2cb2197e80866994673c9018cc365ea9e9ca558147"
+    }
+  },
+  "status": "COMPLETED",
+  "table1": {
+    "F1_absolute_gap": 0.014471991505928594,
+    "F1_mean": 0.7713280084940715,
+    "F1_standardized_gap": 0.4698698540885907,
+    "F1_std": 0.0315928508496908,
+    "checkpoint": "D:\\AgentData\\RAC-MIPP\\S1-R1\\runs\\S1R1-COMA-SEED-20260809-R1\\checkpoints\\final_actor_state.pt",
+    "checkpoint_selection": "FINAL_CHECKPOINT_ONLY",
+    "checkpoint_sha256": "baf19c28c9140cecac18e0aa26baa8cd0b7bc1e11e37376e2b23f73438ef0e65",
+    "entropy_absolute_gap": 0.004288109654223826,
+    "entropy_mean": 0.28848810965422383,
+    "entropy_standardized_gap": 0.10510072681921141,
+    "entropy_std": 0.06009139995394612,
+    "evaluation_end_time": "2026-08-09T10:30:50.184953+00:00",
+    "evaluation_start_time": "2026-08-09T10:30:08.091705+00:00",
+    "evaluation_wall_clock_seconds": 42.09324860572815,
+    "formal_run": true,
+    "n": 50,
+    "paper_F1_mean": 0.7858,
+    "paper_F1_std": 0.0308,
+    "paper_entropy_mean": 0.2842,
+    "paper_entropy_std": 0.0408,
+    "qualitative_local_npz": "D:\\AgentData\\RAC-MIPP\\S1-R1\\runs\\S1R1-COMA-SEED-20260809-R1\\qualitative_trial_1.npz",
+    "qualitative_local_npz_sha256": "88182601612e5725f5526a2cb2197e80866994673c9018cc365ea9e9ca558147",
+    "qualitative_plot": "D:\\Desktop\\my_project\\RAC-MIPP\\artifacts\\s1\\r1\\small_plots\\formal_qualitative_rollout.png",
+    "quantitative_parity": "STRONG_PARITY",
+    "run_id": "S1R1-COMA-SEED-20260809-R1",
+    "task_id": "S1-R1-ORIGINAL-COMA-FORMAL-REPRODUCTION-R1",
+    "test_leakage": false
+  },
+  "task_id": "S1-R1-ORIGINAL-COMA-FORMAL-REPRODUCTION-R1",
+  "test_leakage": false,
+  "training": {
+    "agent_transitions": 4500000,
+    "checkpoint": "D:\\AgentData\\RAC-MIPP\\S1-R1\\runs\\S1R1-COMA-SEED-20260809-R1\\checkpoints\\final_actor_state.pt",
+    "checkpoint_sha256": "baf19c28c9140cecac18e0aa26baa8cd0b7bc1e11e37376e2b23f73438ef0e65",
+    "checkpoint_size": 9108403,
+    "gpu": "NVIDIA GeForce RTX 5060 Ti",
+    "missions": 75000,
+    "seed": 20260809,
+    "wall_clock_seconds": 16078.112263441086
+  },
+  "upstream_commit": "1e9bdc3ba90f707ce79797468f533f5733c65e4b"
+}
