@@ -1,0 +1,6 @@
+packet_drop_probability: 0.0
+delay_steps: 0
+communication_radius: 25.0
+channel_seed_rule: ENVIRONMENT_SEED_PLUS_300000
+development_characterization: true
+not_final_paper_result: true

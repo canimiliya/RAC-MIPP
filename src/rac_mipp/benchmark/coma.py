@@ -66,3 +66,46 @@ class OriginalCOMAAdapter:
     def close(self) -> None:
         self.writer.flush()
         self.writer.close()
+
+
+class UncertainCommunicationCOMAAdapter(OriginalCOMAAdapter):
+    """Evaluate the frozen COMA policy through the S3 channel bridge."""
+
+    algorithm = "ORIGINAL_IPP_MARL_COMA_S3_CHANNEL"
+
+    def __init__(self, *, channel_config, channel_seed_offset: int = 0, **kwargs):
+        super().__init__(**kwargs)
+        self.channel_config = channel_config
+        self.channel_seed_offset = int(channel_seed_offset)
+        self.last_channel_events: list[dict[str, Any]] = []
+        self.last_channel_summary: dict[str, Any] = {}
+
+    def evaluate_seed(
+        self, seed: int, communication_observer: Any, *, channel_seed: int | None = None
+    ) -> dict[str, Any]:
+        from rac_mipp.communication import COMAChannelBridge
+
+        actual_channel_seed = (
+            int(channel_seed)
+            if channel_seed is not None
+            else int(seed) + self.channel_seed_offset
+        )
+        bridge = COMAChannelBridge(self.channel_config, actual_channel_seed)
+        with bridge.installed(self.wrapper):
+            raw = self._s1.evaluate_episode(
+                self.params,
+                self.wrapper,
+                self.grid,
+                self.sensor,
+                int(seed),
+                communication_observer=communication_observer,
+            )
+        steps = int(raw["episode_steps"])
+        agents = int(self.params["experiment"]["missions"]["n_agents"])
+        self.last_channel_events = bridge.channel.event_records()
+        self.last_channel_summary = bridge.channel.summary(
+            n_agents=agents, episode_steps=steps
+        )
+        raw.update(self.last_channel_summary)
+        raw["channel_seed"] = actual_channel_seed
+        return raw

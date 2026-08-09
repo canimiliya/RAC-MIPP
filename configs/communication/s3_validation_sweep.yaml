@@ -1,0 +1,14 @@
+validation_seed_count: 10
+channel_seed_offset: 300000
+development_characterization: true
+not_final_paper_result: true
+conditions:
+  - {name: drop_0, packet_drop_probability: 0.0, delay_steps: 0, communication_radius: 25.0}
+  - {name: drop_0p1, packet_drop_probability: 0.1, delay_steps: 0, communication_radius: 25.0}
+  - {name: drop_0p3, packet_drop_probability: 0.3, delay_steps: 0, communication_radius: 25.0}
+  - {name: drop_0p5, packet_drop_probability: 0.5, delay_steps: 0, communication_radius: 25.0}
+  - {name: delay_1, packet_drop_probability: 0.0, delay_steps: 1, communication_radius: 25.0}
+  - {name: delay_3, packet_drop_probability: 0.0, delay_steps: 3, communication_radius: 25.0}
+  - {name: delay_5, packet_drop_probability: 0.0, delay_steps: 5, communication_radius: 25.0}
+  - {name: joint_0p3_d3, packet_drop_probability: 0.3, delay_steps: 3, communication_radius: 25.0}
+  - {name: joint_0p5_d5, packet_drop_probability: 0.5, delay_steps: 5, communication_radius: 25.0}

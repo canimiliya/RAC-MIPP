@@ -73,4 +73,21 @@ def normalize_episode_metrics(raw: dict[str, Any]) -> dict[str, Any]:
     }
     result = {name: raw[source] for name, source in aliases.items()}
     result.update({name: "NOT_AVAILABLE_YET" for name in FUTURE_METRICS})
+    if "normalized_communication_load" in raw:
+        result["communication_load"] = raw["normalized_communication_load"]
+    if "packet_delivery_ratio" in raw:
+        result["packet_delivery"] = raw["packet_delivery_ratio"]
+    for name in (
+        "messages_attempted",
+        "messages_range_eligible",
+        "messages_dropped",
+        "messages_delayed",
+        "messages_delivered",
+        "effective_neighbor_degree",
+        "message_age_mean",
+        "message_age_max",
+        "communication_radius",
+    ):
+        if name in raw:
+            result[name] = raw[name]
     return result

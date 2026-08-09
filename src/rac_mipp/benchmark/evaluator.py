@@ -73,6 +73,24 @@ def evaluate_policy(
     aggregate = {}
     for metric in ("entropy", "F1", "mission_return", "episode_length", "measurement_count", "path_length"):
         aggregate[metric] = _summary([float(row[metric]) for row in rows])
+    future_metrics = {
+        "communication_load": "NOT_AVAILABLE_YET",
+        "packet_delivery": "NOT_AVAILABLE_YET",
+        "tail_risk": "NOT_AVAILABLE_YET",
+        "OOD_gap": "NOT_AVAILABLE_YET",
+    }
+    for metric in ("communication_load", "packet_delivery"):
+        values = [row[metric] for row in rows]
+        if all(isinstance(value, (int, float)) for value in values):
+            future_metrics[metric] = _summary([float(value) for value in values])
+    channel_metrics = {}
+    for metric in (
+        "messages_attempted", "messages_range_eligible", "messages_dropped",
+        "messages_delayed", "messages_delivered", "effective_neighbor_degree",
+        "message_age_mean", "message_age_max", "communication_radius",
+    ):
+        if metric in rows[0]:
+            channel_metrics[metric] = _summary([float(row[metric]) for row in rows])
     summary = {
         "schema_version": 1,
         "algorithm": adapter.algorithm,
@@ -83,12 +101,8 @@ def evaluate_policy(
         "started_at": started,
         "ended_at": _utc_now(),
         "metrics": aggregate,
-        "future_metrics": {
-            "communication_load": "NOT_AVAILABLE_YET",
-            "packet_delivery": "NOT_AVAILABLE_YET",
-            "tail_risk": "NOT_AVAILABLE_YET",
-            "OOD_gap": "NOT_AVAILABLE_YET",
-        },
+        "future_metrics": future_metrics,
+        "channel_metrics": channel_metrics,
         "communication_hook": {
             "enabled": communication_hook,
             "semantics": "PASSIVE_NO_ENVIRONMENT_MUTATION" if communication_hook else "HOOK_OFF",
