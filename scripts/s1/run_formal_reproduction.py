@@ -33,6 +33,7 @@ PAPER_FIXED_POSITIONS = (
     (40, 40, 15),
     (10, 40, 15),
 )
+_COLLECTOR: dict[str, Any] = {}
 
 
 def parse_args() -> argparse.Namespace:
@@ -172,6 +173,7 @@ def install_adapters() -> list[str]:
     from marl_framework.agent.state_space import AgentStateSpace
     from marl_framework.batch_memory import BatchMemory
     from marl_framework.mapping import ground_truths
+    from mapping import ground_truths as legacy_ground_truths
 
     original_get = BatchMemory.get
 
@@ -221,14 +223,96 @@ def install_adapters() -> list[str]:
         ) or expected_state[2:] != actual_state[2:]:
             raise RuntimeError("synthetic-map fast path RNG parity failed")
     ground_truths.gaussian_random_field = exact_fast_ground_truth
+    legacy_ground_truths.gaussian_random_field = exact_fast_ground_truth
     torch.autograd.set_detect_anomaly(False)
     return [
         "BatchMemory mask accessor typo repair",
         "paper-stated fixed four-corner initial positions",
-        "exact-output/RNG-parity synthetic-map dead-computation fast path",
+        "exact-output/RNG-parity synthetic-map dead-computation fast path for both upstream import names",
         "TD targets use CriticLearner synchronized target critic",
         "autograd anomaly tracing disabled for formal-run performance",
     ]
+
+
+def collector_worker_init(upstream: str, params: dict, training_seed: int) -> None:
+    """Initialize one persistent CPU-only environment collector process."""
+    os.environ["CUDA_VISIBLE_DEVICES"] = ""
+    os.environ["OMP_NUM_THREADS"] = "1"
+    os.environ["MKL_NUM_THREADS"] = "1"
+    upstream_path = Path(upstream).resolve()
+    framework = upstream_path / "marl_framework"
+    for path in (str(framework), str(upstream_path)):
+        if path not in sys.path:
+            sys.path.insert(0, path)
+    import cv2
+    import torch
+    from marl_framework.coma_wrapper import COMAWrapper
+    from marl_framework.mapping.grid_maps import GridMap
+    from marl_framework.missions.episode_generator import EpisodeGenerator
+    from marl_framework.sensors import Sensor
+    from marl_framework.sensors.models import SensorModel
+
+    torch.set_num_threads(1)
+    cv2.setNumThreads(0)
+    install_adapters()
+    torch.autograd.set_detect_anomaly(False)
+    grid = GridMap(params)
+    sensor = Sensor(SensorModel(), grid)
+    wrapper = COMAWrapper(params, None)
+    _COLLECTOR.update(
+        {
+            "params": params,
+            "training_seed": int(training_seed),
+            "grid": grid,
+            "sensor": sensor,
+            "wrapper": wrapper,
+            "episode_type": EpisodeGenerator,
+        }
+    )
+
+
+def collector_worker_run(task: tuple[list[int], str]) -> dict[str, Any]:
+    """Collect a contiguous episode chunk and return CPU transitions."""
+    import torch
+    from marl_framework.batch_memory import BatchMemory
+
+    episode_indices, actor_path = task
+    wrapper = _COLLECTOR["wrapper"]
+    wrapper.actor_network.load_state_dict(
+        torch.load(actor_path, map_location="cpu", weights_only=True)
+    )
+    memory = BatchMemory(_COLLECTOR["params"], wrapper)
+    generator = _COLLECTOR["episode_type"](
+        _COLLECTOR["params"], None, _COLLECTOR["grid"], _COLLECTOR["sensor"]
+    )
+    episode_rows = []
+    for episode_index in episode_indices:
+        set_all_seeds((_COLLECTOR["training_seed"] + episode_index) % (2**32))
+        result = generator.execute(episode_index, memory, wrapper, "train")
+        episode_rows.append(
+            {
+                "episode": episode_index,
+                "return": float(result[0]),
+                "absolute_return": float(result[2]),
+                "epsilon": float(result[7]),
+            }
+        )
+    transitions = {}
+    for agent_id, agent_transitions in memory.transitions.items():
+        transitions[agent_id] = [
+            (
+                item.state.cpu(),
+                item.observation.cpu(),
+                item.action.cpu(),
+                item.mask.cpu(),
+                float(item.reward),
+                bool(item.done),
+                None,
+                None,
+            )
+            for item in agent_transitions
+        ]
+    return {"episodes": episode_rows, "transitions": transitions}
 
 
 def scalar(value: Any) -> float:
@@ -359,6 +443,8 @@ def restore_checkpoint(wrapper, path: Path, manifest: dict) -> tuple[int, int]:
 
 
 def training(args, config: dict, prereg: dict, params: dict, paths: dict[str, Path], debug: bool) -> int:
+    from concurrent.futures import ProcessPoolExecutor
+    import multiprocessing
     import numpy as np
     import torch
     from torch.utils.tensorboard import SummaryWriter
@@ -368,9 +454,13 @@ def training(args, config: dict, prereg: dict, params: dict, paths: dict[str, Pa
     from marl_framework.missions.episode_generator import EpisodeGenerator
     from marl_framework.sensors import Sensor
     from marl_framework.sensors.models import SensorModel
+    from marl_framework.utils.utils import TransitionCOMA
 
     if not torch.cuda.is_available():
         raise RuntimeError("formal GPU training requires CUDA")
+    # Importing the upstream network modules re-enables anomaly tracing at module
+    # scope, so disable it again after all training imports are complete.
+    torch.autograd.set_detect_anomaly(False)
     run_id = paths["run"].name
     manifest_path = paths["run"] / "run_manifest.json"
     latest_path = paths["checkpoints"] / "latest_state.pt"
@@ -421,30 +511,81 @@ def training(args, config: dict, prereg: dict, params: dict, paths: dict[str, Pa
 
     metrics_path = paths["logs"] / "training_metrics.jsonl"
     training_started = time.time()
+    worker_count = int(config["training"]["environment_workers"])
+    collector_actor = paths["run"] / "collector_actor_state.pt"
+    context = multiprocessing.get_context("spawn")
+    executor = ProcessPoolExecutor(
+        max_workers=worker_count,
+        mp_context=context,
+        initializer=collector_worker_init,
+        initargs=(str(args.upstream.resolve()), params, int(config["training_seed"])),
+    )
     try:
         with metrics_path.open("a", encoding="utf-8", buffering=1) as metrics_stream:
             for update_idx in range(completed_updates, total_updates):
                 cycle_started = time.time()
+                collection_started = time.time()
                 returns = []
                 absolute_returns = []
                 eps = None
-                for _ in range(int(config["training"]["episodes_per_collection"])):
-                    result = episode.execute(next_episode, memory, wrapper, "train")
-                    returns.append(float(result[0]))
-                    absolute_returns.append(float(result[2]))
-                    eps = float(result[7])
-                    next_episode += 1
+                torch.save(wrapper.actor_network.state_dict(), collector_actor)
+                episodes_in_collection = int(config["training"]["episodes_per_collection"])
+                episode_indices = list(
+                    range(next_episode, next_episode + episodes_in_collection)
+                )
+                quotient, remainder = divmod(episodes_in_collection, worker_count)
+                chunk_sizes = [
+                    quotient + (1 if worker_id < remainder else 0)
+                    for worker_id in range(worker_count)
+                ]
+                chunks = []
+                cursor = 0
+                for chunk_size in chunk_sizes:
+                    if chunk_size:
+                        chunks.append(episode_indices[cursor : cursor + chunk_size])
+                        cursor += chunk_size
+                tasks = [(chunk, str(collector_actor)) for chunk in chunks]
+                collected = list(executor.map(collector_worker_run, tasks))
+                episode_rows = [
+                    row for chunk_result in collected for row in chunk_result["episodes"]
+                ]
+                if [row["episode"] for row in episode_rows] != episode_indices:
+                    raise RuntimeError("parallel collector episode ordering drift")
+                for row in episode_rows:
+                    returns.append(row["return"])
+                    absolute_returns.append(row["absolute_return"])
+                    eps = row["epsilon"]
+                for chunk_result in collected:
+                    for agent_id, agent_transitions in chunk_result["transitions"].items():
+                        memory.transitions[int(agent_id)].extend(
+                            TransitionCOMA(
+                                fields[0],
+                                fields[1],
+                                fields[2].to(wrapper.actor_network.device),
+                                fields[3].to(wrapper.actor_network.device),
+                                fields[4],
+                                fields[5],
+                                fields[6],
+                                fields[7],
+                            )
+                            for fields in agent_transitions
+                        )
+                next_episode += episodes_in_collection
+                collection_seconds = time.time() - collection_started
                 expected = int(config["training"]["transitions_per_collection"])
                 if memory.size() != expected:
                     raise RuntimeError(f"collection size {memory.size()} != {expected}")
 
+                target_started = time.time()
                 if update_idx % int(params["networks"]["copy_rate"]) == 0:
                     wrapper.critic_learner.target_critic.load_state_dict(
                         wrapper.critic_network.state_dict()
                     )
                     wrapper.critic_learner.target_critic.eval()
                 build_td_targets_batched(memory, wrapper.critic_learner.target_critic)
+                target_seconds = time.time() - target_started
 
+                optimization_started = time.time()
                 critic_metrics = actor_metrics = None
                 for data_pass in range(int(params["networks"]["data_passes"])):
                     batches = memory.build_batches()
@@ -452,6 +593,7 @@ def training(args, config: dict, prereg: dict, params: dict, paths: dict[str, Pa
                         update_idx, batches, data_pass
                     )
                     _, actor_metrics = wrapper.actor_learner.learn(batches, q_values, eps)
+                optimization_seconds = time.time() - optimization_started
                 memory.clear()
                 completed_updates = update_idx + 1
                 transitions = completed_updates * expected
@@ -465,6 +607,9 @@ def training(args, config: dict, prereg: dict, params: dict, paths: dict[str, Pa
                     "absolute_return_mean": float(np.mean(absolute_returns)),
                     "critic_loss": scalar(critic_metrics[0]),
                     "actor_loss": scalar(actor_metrics[0]),
+                    "collection_seconds": collection_seconds,
+                    "td_target_seconds": target_seconds,
+                    "optimization_seconds": optimization_seconds,
                     "cycle_seconds": time.time() - cycle_started,
                     "timestamp": utc_now(),
                 }
@@ -512,6 +657,7 @@ def training(args, config: dict, prereg: dict, params: dict, paths: dict[str, Pa
         write_json(manifest_path, manifest)
         raise
     finally:
+        executor.shutdown(wait=True, cancel_futures=True)
         writer.flush()
         writer.close()
     return 0

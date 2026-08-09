@@ -8,6 +8,7 @@
   "formal_run_ids": ["S1R1-COMA-SEED-20260809-R1"],
   "training_seed": 20260809,
   "training_seed_count": 1,
+  "mission_rng_rule": "(training_seed + episode_index) mod 2^32",
   "total_budget": {
     "update_cycles": 1500,
     "agent_transitions": 4500000,
@@ -20,7 +21,9 @@
     "missions_per_collection": 50,
     "optimization_epochs": 5,
     "batches_per_epoch": 5,
-    "batch_size": 600
+    "batch_size": 600,
+    "environment_workers": 20,
+    "worker_semantics": "One frozen actor per collection; mission results concatenated in ascending episode order before optimization."
   },
   "optimizer": "Adam",
   "actor_learning_rate": 0.00001,
@@ -67,6 +70,6 @@
   "formal_checkpoint_selection_uses_test": false,
   "config_path": "configs/s1/r1/formal.yaml",
   "protocol_path": "docs/S1_FORMAL_REPRO_PROTOCOL.md",
-  "config_hash": "644038253e39b99e701676d309d84b5ca0bdb42a6a5dc5f0fe2fccba3b7ff815",
-  "protocol_hash": "2649dc8b38bf4a34df88c437e3e2296377546440de8f110dce066abfdf04d64f"
+  "config_hash": "233395837a86a020c38369072be22ccbc51d4ba8640c4da1bb73431c6b38f6bf",
+  "protocol_hash": "62170e7dde6ac306ea3a0e4559600800e382f54a5afeecba2f8be5f6cdab6ad5"
 }

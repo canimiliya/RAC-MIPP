@@ -8,6 +8,8 @@ training:
   episodes_per_collection: 50
   transitions_per_episode: 60
   checkpoint_every_updates: 25
+  environment_workers: 20
+  mission_rng_rule: training_seed_plus_episode_index_mod_2pow32
   model_selection: final_checkpoint
 evaluation:
   trials: 50

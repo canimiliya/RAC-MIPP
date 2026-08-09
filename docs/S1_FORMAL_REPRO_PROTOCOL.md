@@ -12,10 +12,12 @@ This document preregisters protocol revision 1 for task `S1-R1-ORIGINAL-COMA-FOR
 ## Training protocol
 
 - Formal training seed: `20260809`; exactly one training seed is preregistered.
+- Mission RNG: sensor noise and stochastic policy sampling for training mission `e` use `(20260809 + e) mod 2^32`. This independent mission rule is frozen before formal training so a 20-process CPU collector is scheduling-invariant and exactly resumable.
 - Total budget: 1,500 collection/update cycles, 3,000 agent transitions per collection, totaling 4,500,000 agent transitions and 75,000 missions.
 - Budget provenance: `CODE_DERIVED`, not `PAPER_STATED`. The original uploaded `params.yaml` annotated `n_episodes: 1500` as `full batch fillings`; the original paper-aligned configuration used batch size 600 and five batches per collection. The current outer-loop formula therefore expands 1,500 fillings into 75,000 missions.
 - Each mission has four agents and 15 measurement/action timesteps (`budget=14` in the inclusive upstream loop), yielding 60 agent transitions.
 - After every 50 missions, optimize five epochs over five randomly shuffled batches of 600 transitions.
+- The 50 missions in one on-policy collection use the same frozen actor and run in 20 CPU worker processes, leaving four logical cores outside the pool. Returned transitions are concatenated in ascending mission order before TD targets and optimization; no worker crosses an update boundary.
 - Optimizers: upstream Adam; actor learning rate `1e-5`; critic learning rate `1e-4`.
 - Returns: upstream `gamma=0.99`, TD `lambda=0.8`.
 - Exploration: epsilon linearly decreases from `0.5` to `0.02` over the first 10,000 training missions, then remains at `0.02`.
@@ -34,6 +36,7 @@ The upstream checkout remains unmodified. The runner applies only recorded in-pr
 4. redirect temp, cache, checkpoints, TensorBoard, and logs to `D:\AgentData\RAC-MIPP\S1-R1`;
 5. cache/vectorize the episode-independent spectral amplitude used by the synthetic-map generator only after exact-array parity checks against the original generator;
 6. disable autograd anomaly tracing for the long run; this changes diagnostics, not gradients or updates.
+7. parallelize independent missions within each frozen-policy collection across 20 CPU workers using the preregistered per-mission RNG rule.
 
 None changes the COMA loss, actor/critic architecture, reward, action space, observation channels, map update, sensor model, or evaluator definition.
 
